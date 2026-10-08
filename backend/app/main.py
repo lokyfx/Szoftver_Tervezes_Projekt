@@ -36,7 +36,7 @@ orders: list[dict[str, Any]] = [
         "restaurant": "Green Bowl",
         "address": "Bartok Bela ut 12",
         "status": "Ready",
-        "position": [47.501, 19.034],
+        "position": [46.519598075183445, 24.49782576989758],
     },
     {
         "id": "#1041",
@@ -44,7 +44,7 @@ orders: list[dict[str, Any]] = [
         "restaurant": "Mamma Mia",
         "address": "Kinizsi utca 8",
         "status": "Delivering",
-        "position": [47.492, 19.057],
+        "position": [46.539877253283834, 24.55825258006202],
     },
     {
         "id": "#1040",
@@ -52,7 +52,7 @@ orders: list[dict[str, Any]] = [
         "restaurant": "Urban Wok",
         "address": "Raday utca 22",
         "status": "Picked up",
-        "position": [47.485, 19.066],
+        "position": [46.55452885569653, 24.566961543757436],
     },
 ]
 
@@ -61,9 +61,14 @@ class RiderStatus(BaseModel):
     online: bool
 
 
+@app.get("/api/health")
+def health_check() -> dict[str, str]:
+    return {"status": "ok", "message": "Backend connection is working"}
+
+
 @app.get("/api/dashboard")
 def get_dashboard() -> dict[str, Any]:
-    return {"rider": rider, "orders": orders, "center": [47.4979, 19.0402]}
+    return {"rider": rider, "orders": orders, "center": [46.523665071133486, 24.599028238137638]}
 
 
 @app.patch("/api/rider/status")

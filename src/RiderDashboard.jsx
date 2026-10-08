@@ -36,6 +36,7 @@ function RiderDashboard() {
   const [dashboard, setDashboard] = useState(null)
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [error, setError] = useState('')
+  const [connectionStatus, setConnectionStatus] = useState('')
 
   useEffect(() => {
     fetch('/api/dashboard')
@@ -60,6 +61,19 @@ function RiderDashboard() {
 
     if (!response.ok) return
     setDashboard((current) => ({ ...current, rider: { ...current.rider, online } }))
+  }
+
+  async function testBackendConnection() {
+    setConnectionStatus('Testing...')
+
+    try {
+      const response = await fetch('/api/health')
+      if (!response.ok) throw new Error('Health check failed')
+      const data = await response.json()
+      setConnectionStatus(data.message)
+    } catch {
+      setConnectionStatus('Backend is not available')
+    }
   }
 
   async function selectOrder(orderId) {
@@ -96,6 +110,10 @@ function RiderDashboard() {
             <span className="toggle-track"><span /></span>
             {rider.online ? 'You are online' : 'Go online'}
           </button>
+          <div className="connection-test">
+            <button type="button" onClick={testBackendConnection}>Test backend connection</button>
+            {connectionStatus && <span>{connectionStatus}</span>}
+          </div>
 
           <div className="stats-grid">
             <div><strong>{rider.stats.deliveries}</strong><span>Deliveries</span></div>
