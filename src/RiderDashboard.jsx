@@ -45,6 +45,7 @@ function UpdateMapCenter({ center }) {
 function RiderDashboard() {
   const [dashboard, setDashboard] = useState(null)
   const [selectedOrder, setSelectedOrder] = useState(null)
+  const [orderFilter, setOrderFilter] = useState('All')
   const [error, setError] = useState('')
   const [connectionStatus, setConnectionStatus] = useState('')
   const [currentLocation, setCurrentLocation] = useState(null)
@@ -124,6 +125,10 @@ function RiderDashboard() {
   if (!dashboard) return <main className="dashboard-message">Loading dashboard...</main>
 
   const { rider, orders } = dashboard
+  const orderFilters = ['All', 'Ready', 'Delivering', 'Picked up']
+  const visibleOrders = orderFilter === 'All'
+    ? orders
+    : orders.filter((order) => order.status === orderFilter)
   const mapCenter = currentLocation ?? [0, 0]
   const locationLabel = currentLocation
     ? `${currentLocation[0].toFixed(5)}, ${currentLocation[1].toFixed(5)}`
@@ -161,8 +166,21 @@ function RiderDashboard() {
           </div>
 
           <div className="orders-heading"><h2>Active orders</h2><span>{orders.length}</span></div>
+          <div className="order-filters" aria-label="Filter orders">
+            {orderFilters.map((filter) => (
+              <button
+                className={`order-filter ${orderFilter === filter ? 'active' : ''}`}
+                type="button"
+                key={filter}
+                aria-pressed={orderFilter === filter}
+                onClick={() => setOrderFilter(filter)}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
           <div className="order-list">
-            {orders.map((order) => (
+            {visibleOrders.map((order) => (
               <button
                 className={`order-card ${selectedOrder === order.id ? 'selected' : ''}`}
                 type="button"

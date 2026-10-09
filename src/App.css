@@ -235,6 +235,31 @@ h2 {
 	font: 500 11px 'DM Mono', monospace;
 }
 
+.order-filters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-bottom: 12px;
+}
+
+.order-filter {
+	padding: 6px 9px;
+	border: 1px solid var(--line);
+	border-radius: 16px;
+	background: #fff;
+	color: var(--muted);
+	font-size: 10px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.order-filter:hover,
+.order-filter.active {
+	border-color: #bce4cc;
+	background: #f0fbf4;
+	color: var(--green);
+}
+
 .order-list {
 	display: flex;
 	flex-direction: column;
