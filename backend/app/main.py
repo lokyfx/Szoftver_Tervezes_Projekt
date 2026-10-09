@@ -40,7 +40,7 @@ orders: list[dict[str, Any]] = [
     },
     {
         "id": "#1041",
-        "customer": "Anna Nagy",
+        "customer": "Lokodi Attila",
         "restaurant": "Mamma Mia",
         "address": "Kinizsi utca 8",
         "status": "Delivering",
@@ -84,8 +84,3 @@ def select_order(order_id: str) -> dict[str, str]:
     rider["selected_order"] = order_id
     return {"selected_order": rider["selected_order"]}
 
-
-##added comment
-
-
-helo
