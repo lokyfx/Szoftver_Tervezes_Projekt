@@ -17,6 +17,30 @@ button {
 	font: inherit;
 }
 
+.view-switcher {
+	position: fixed;
+	z-index: 2000;
+	top: 14px;
+	right: 20px;
+	display: flex;
+	gap: 6px;
+}
+
+.view-switcher button {
+	padding: 7px 11px;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	background: #fff;
+	color: var(--ink);
+	cursor: pointer;
+}
+
+.view-switcher button:hover {
+	border-color: #bce4cc;
+	background: #f0fbf4;
+	color: var(--green);
+}
+
 .dashboard-shell {
 	min-height: 100vh;
 	background: var(--paper);

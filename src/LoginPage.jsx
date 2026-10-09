@@ -1,0 +1,36 @@
+import { useState } from 'react'
+import './LoginPage.css'
+
+function LoginPage() {
+  const [message, setMessage] = useState('')
+
+  function handleSubmit(event) {
+    event.preventDefault()
+    setMessage('A bejelentkezés még nincs backendhez kötve.')
+  }
+
+  return (
+    <main className="login-page">
+      <header className="topbar">
+        <div className="brand-mark"><span>R</span>Restaurant</div>
+      </header>
+
+      <section className="login-card">
+        <p className="eyebrow">Üdv újra</p>
+        <h1>Bejelentkezés</h1>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <label htmlFor="username">Felhasználónév</label>
+          <input id="username" name="username" autoComplete="username" required />
+
+          <label htmlFor="password">Jelszó</label>
+          <input id="password" name="password" type="password" autoComplete="current-password" required />
+
+          <button type="submit">Belépés</button>
+          {message && <p className="login-message" role="status">{message}</p>}
+        </form>
+      </section>
+    </main>
+  )
+}
+
+export default LoginPage

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import RiderDashboard from './RiderDashboard.jsx'
 import RestaurantDashboard from './RestaurantDashboard.jsx'
+import LoginPage from './LoginPage.jsx'
 import './App.css'
 
 function App() {
@@ -8,11 +9,12 @@ function App() {
 
   return (
     <>
-      <nav style={{ position: 'fixed', zIndex: 2000, top: 14, right: 20 }}>
-        <button type="button" onClick={() => setView('rider')}>Rider</button>
-        <button type="button" onClick={() => setView('restaurant')}>Restaurant</button>
+      <nav className="view-switcher">
+        <button type="button" onClick={() => setView('rider')}>Futár</button>
+        <button type="button" onClick={() => setView('restaurant')}>Étterem</button>
+        <button type="button" onClick={() => setView('login')}>Belépés</button>
       </nav>
-      {view === 'rider' ? <RiderDashboard /> : <RestaurantDashboard />}
+      {view === 'login' ? <LoginPage /> : view === 'rider' ? <RiderDashboard /> : <RestaurantDashboard />}
     </>
   )
 }
