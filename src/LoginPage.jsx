@@ -3,6 +3,7 @@ import './LoginPage.css'
 
 function LoginPage() {
   const [message, setMessage] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -23,7 +24,24 @@ function LoginPage() {
           <input id="username" name="username" autoComplete="username" required />
 
           <label htmlFor="password">Jelszó</label>
-          <input id="password" name="password" type="password" autoComplete="current-password" required />
+          <div className="password-field">
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              autoComplete="current-password"
+              required
+            />
+            <button
+              className="password-toggle"
+              type="button"
+              aria-label={showPassword ? 'Jelszó elrejtése' : 'Jelszó megjelenítése'}
+              aria-pressed={showPassword}
+              onClick={() => setShowPassword((visible) => !visible)}
+            >
+              {showPassword ? '◉' : '◎'}
+            </button>
+          </div>
 
           <button type="submit">Belépés</button>
           {message && <p className="login-message" role="status">{message}</p>}
