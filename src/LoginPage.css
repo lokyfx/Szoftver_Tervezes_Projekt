@@ -66,6 +66,28 @@
 	font-size: 12px;
 }
 
+.register-prompt {
+	margin: 24px 0 0;
+	color: var(--muted);
+	font-size: 12px;
+	text-align: center;
+}
+
+.register-link {
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--green);
+	font: inherit;
+	font-weight: 800;
+	cursor: pointer;
+}
+
+.register-link:hover {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
 @media (max-width: 480px) {
 	.login-card {
 		padding: 28px 22px;

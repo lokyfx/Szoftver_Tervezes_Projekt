@@ -28,6 +28,16 @@ function LoginPage() {
           <button type="submit">Belépés</button>
           {message && <p className="login-message" role="status">{message}</p>}
         </form>
+        <p className="register-prompt">
+          Új vagy nálunk?{' '}
+          <button
+            className="register-link"
+            type="button"
+            onClick={() => setMessage('A regisztráció hamarosan elérhető.')}
+          >
+            Regisztráció
+          </button>
+        </p>
       </section>
     </main>
   )
