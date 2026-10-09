@@ -333,6 +333,20 @@ h2 {
 	font-weight: 600;
 }
 
+.map-location-error {
+	position: absolute;
+	z-index: 2;
+	top: 76px;
+	left: 24px;
+	padding: 7px 10px;
+	border: 1px solid #f0d5c9;
+	border-radius: 6px;
+	background: rgba(255, 248, 245, 0.96);
+	color: #a45d45;
+	font-size: 10px;
+	font-weight: 700;
+}
+
 .map-legend {
 	position: absolute;
 	z-index: 2;
@@ -428,6 +442,11 @@ h2 {
 
 	.map-label {
 		top: 14px;
+		left: 14px;
+	}
+
+	.map-location-error {
+		top: 66px;
 		left: 14px;
 	}
 

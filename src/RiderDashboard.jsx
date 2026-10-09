@@ -32,11 +32,27 @@ function RecenterButton({ center }) {
   )
 }
 
+function UpdateMapCenter({ center }) {
+  const map = useMap()
+
+  useEffect(() => {
+    map.flyTo(center, 14)
+  }, [center, map])
+
+  return null
+}
+
 function RiderDashboard() {
   const [dashboard, setDashboard] = useState(null)
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [error, setError] = useState('')
   const [connectionStatus, setConnectionStatus] = useState('')
+  const [currentLocation, setCurrentLocation] = useState(null)
+  const [locationError, setLocationError] = useState(() => (
+    typeof navigator !== 'undefined' && navigator.geolocation
+      ? 'Locating you...'
+      : 'Location is not supported by this browser'
+  ))
 
   useEffect(() => {
     fetch('/api/dashboard')
@@ -49,6 +65,24 @@ function RiderDashboard() {
         setSelectedOrder(data.rider.selected_order)
       })
       .catch(() => setError('The backend is not available. Start the Python API and try again.'))
+  }, [])
+
+  useEffect(() => {
+    if (!navigator.geolocation) return
+
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        setCurrentLocation([coords.latitude, coords.longitude])
+        setLocationError('')
+      },
+      (geolocationError) => {
+        const message = geolocationError.code === geolocationError.PERMISSION_DENIED
+          ? 'Location permission denied'
+          : 'Could not get your location'
+        setLocationError(message)
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 },
+    )
   }, [])
 
   async function toggleOnline() {
@@ -89,7 +123,11 @@ function RiderDashboard() {
   if (error) return <main className="dashboard-message">{error}</main>
   if (!dashboard) return <main className="dashboard-message">Loading dashboard...</main>
 
-  const { rider, orders, center } = dashboard
+  const { rider, orders } = dashboard
+  const mapCenter = currentLocation ?? [0, 0]
+  const locationLabel = currentLocation
+    ? `${currentLocation[0].toFixed(5)}, ${currentLocation[1].toFixed(5)}`
+    : locationError
 
   return (
     <main className="dashboard-shell">
@@ -140,13 +178,15 @@ function RiderDashboard() {
         </aside>
 
         <section className="map-panel">
-          <div className="map-label"><span className="live-pulse" /> Live area <span>Budapest, District IX</span></div>
-          <MapContainer center={center} zoom={14} scrollWheelZoom className="map">
+          <div className="map-label"><span className="live-pulse" /> Current location <span>{locationLabel}</span></div>
+          <MapContainer center={mapCenter} zoom={currentLocation ? 14 : 2} scrollWheelZoom className="map">
+            <UpdateMapCenter center={mapCenter} />
             <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <Marker position={center} icon={riderIcon}><Popup>You are here</Popup></Marker>
+            {currentLocation && <Marker position={currentLocation} icon={riderIcon}><Popup>You are here</Popup></Marker>}
             {orders.map((order) => <Marker key={order.id} position={order.position} icon={orderIcon}><Popup>{order.id} · {order.restaurant}</Popup></Marker>)}
-            <RecenterButton center={center} />
+            <RecenterButton center={mapCenter} />
           </MapContainer>
+          {locationError && <div className="map-location-error">{locationError}</div>}
           <div className="map-legend"><span><i className="legend-rider" /> You</span><span><i className="legend-order" /> Order</span></div>
         </section>
       </section>
